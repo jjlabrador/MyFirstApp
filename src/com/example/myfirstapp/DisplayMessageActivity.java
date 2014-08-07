@@ -9,25 +9,37 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.TextView;
 
-public class MainActivity extends Activity {
-	public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
-	
+public class DisplayMessageActivity extends Activity {
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		/*setContentView(R.layout.activity_display_message);
+		
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
-		}
+		}*/
+		
+		// Get the message from the intent
+	    Intent intent = getIntent();
+	    String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+	    
+	    // Create the text view
+	    TextView textView = new TextView(this);
+	    textView.setTextSize(40);
+	    textView.setText(message);
+
+	    // Set the text view as the activity layout
+	    setContentView(textView);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.display_message, menu);
 		return true;
 	}
 
@@ -48,34 +60,14 @@ public class MainActivity extends Activity {
 	 */
 	public static class PlaceholderFragment extends Fragment {
 
-		public PlaceholderFragment() {
-		}
+		public PlaceholderFragment() { }
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main, container,
-					false);
+			View rootView = inflater.inflate(R.layout.fragment_display_message,
+					container, false);
 			return rootView;
 		}
-	}
-	
-	/** Called when the user clicks the Send button */
-	/* In order for the system to match this method to the method name given to android:onClick,
-	 * the signature must be exactly as shown. Specifically, the method must:
-	 * 	- Be public
-	 * 	- Have a void return value
-	 * 	- Have a View as the only parameter (this will be the View that was clicked)
-	*/
-	public void sendMessage(View view) {
-		Intent intent = new Intent(this, DisplayMessageActivity.class);
-		/* The constructor used here takes two parameters:
-		 * 	- A Context as its first parameter (this is used because the Activity class is a subclass of Context)
-		 *	- The Class of the app component to which the system should deliver the Intent (in this case, the activity that should be started)
-		*/
-		EditText editText = (EditText) findViewById(R.id.edit_message);
-		String message = editText.getText().toString();
-		intent.putExtra(EXTRA_MESSAGE, message);
-		startActivity(intent);
 	}
 }
